@@ -1,0 +1,15 @@
+ScheduleRange:
+  sched1:
+    Interval: 3600
+    StartTime: 120000
+    EndTime: 235959
+    StartDate: 2015-10-01
+    EndDate: 2015-10-02
+ScheduleRangeDay:
+  schedDay1:
+    Interval: 3600
+    StartTime: 120000
+    EndTime: 235959
+    StartDate: 2015-10-01
+    EndDate: 2015-10-31
+    ApplicableDays: Mon,Tue,Thu,Sat,Sun
