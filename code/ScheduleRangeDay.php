@@ -21,6 +21,9 @@ class ScheduleRangeDay extends ScheduleRange {
 			$i = 0; //In case getDays is corrupt exit after 7 tries.
 			while (!in_array($nextRunDateTime->format('D'), $this->getDays()) && $i < 7) {
 				$nextRunDateTime->add(new DateInterval('P1D'));
+				//Reset the start time
+				list($h, $m, $s) = explode(':', $this->StartTime);
+				$nextRunDateTime->setTime($h, $m, $s);
 				$i++;
 			}
 		}

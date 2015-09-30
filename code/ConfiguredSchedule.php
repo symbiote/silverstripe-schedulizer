@@ -18,27 +18,42 @@ class ConfiguredSchedule  extends DataObject {
 	);
 
 	public function getNextScheduledDateTime() {
-		$now = new DateTime();
+		$now = new DateTimeImmutable(SS_Datetime::now());
+		$return = null;
+		$tomorrow = $now->add(new DateInterval('P1D'))->setTime(23, 59, 59);
 		//filter SpecificRanges by end date
 		$currentRanges = $this->ScheduleRanges()->filter(array(
 			'EndDate:GreaterThan' => $now->format('Y-m-d H:i:s')
 		));
 		//loop each type and find a 'winner'
-		$winners = array();
+		$ranges = array();
 
 		foreach ($currentRanges as $specficRange) {
 			$dateTime = $specficRange->getNextDateTime();
-			if (isset($winners[$specficRange->ClassName]) && $winners[$specficRange->ClassName] < $dateTime) {
-				$winners[$specficRange->ClassName] = $dateTime;
-			} else {
-				$winners[$specficRange->ClassName] = $dateTime;
+			if (isset($ranges[$specficRange->ClassName]) && $ranges[$specficRange->ClassName] > $dateTime) {
+				$ranges[$specficRange->ClassName] = $dateTime;
+			} elseif (!isset($ranges[$specficRange->ClassName])) {
+				$ranges[$specficRange->ClassName] = $dateTime;
 			}
 		}
 
-		if ($winners['ScheduleRange'] > $winners['ScheduleRangeDay']) {
-			return $winners['ScheduleRangeDay'];
+		if(!empty($ranges['ScheduleRange']) && $ranges['ScheduleRange'] < $tomorrow) {
+
+			$return = $ranges['ScheduleRange'];
+
+		} elseif (!empty($ranges['ScheduleRangeDay']) && $ranges['ScheduleRangeDay'] < $tomorrow) {
+
+			$return = $ranges['ScheduleRangeDay'];
+
+		} elseif (empty($ranges['ScheduleRange']) || $ranges['ScheduleRange'] > $ranges['ScheduleRangeDay']) {
+
+			$return = $ranges['ScheduleRangeDay'];
+
+		} elseif(!empty($ranges['ScheduleRange'])) {
+
+			$return = $ranges['ScheduleRange'];
 		}
 
-		return $winners['ScheduleRange'];
+		return $return;
 	}
 }

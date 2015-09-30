@@ -4,53 +4,60 @@
  *
  * @author Stephen McMahon <stephen@silverstripe.com.au>
  */
+ini_set('display_errors',1);
+ini_set('display_startup_errors',1);
+error_reporting(-1);
 class ScheduleRangeDayTest extends SapphireTest {
 
 	static $fixture_file = 'schedulizer/tests/ScheduleRange.yml';
 	/**
 	 *   schedDay1:
-	 *     Interval: 3600
-	 *     StartTime: 120000
-	 *     EndTime: 170000
+	 *     Interval: 1800
+	 *     StartTime: 050000
+	 *     EndTime: 220000
 	 *     StartDate: 2015-10-01
 	 *     EndDate: 2015-10-31
-	 *     ApplicableDays: Mon,Tue,Thr,Sat,Sun
+	 *     ApplicableDays: Mon,Fri,Sat,Sun
+	 *     ConfiguredSchedule: =>ConfiguredSchedule.ConfigSched1
 	 *
-	 * Oct 1st = Thrusday (on day)
-	 * Oct 2nd = Friday (off day)
-	 * Oct 7th = Wednesday (on day)
+	 * Oct 1st = Thrusday (off day)
+	 * Oct 2nd = Friday (on day)
+	 * Oct 3rd = Saturday (on day)
+	 * Oct 4th = Sunday (on day)
+	 * Oct 5th = Monday (on day)
+	 * Oct 6th = Tuesday (off day)
 	 */
 
     public function testGetNextDateTimeOnDay() {
 		$sched = $this->objFromFixture('ScheduleRangeDay', 'schedDay1');
 
 		//Before
-		SS_Datetime::set_mock_now('2015-10-01 11:50:00');
-		$this->assertEquals('2015-10-01 12:00:00', $sched->getNextDateTime()->Format('Y-m-d H:i:s'));
+		SS_Datetime::set_mock_now('2015-10-02 04:50:00');
+		$this->assertEquals('2015-10-02 05:00:00', $sched->getNextDateTime()->Format('Y-m-d H:i:s'));
 	}
 
     public function testGetNextDateTimeOnDayOutOfTimeRange() {
 		$sched = $this->objFromFixture('ScheduleRangeDay', 'schedDay1');
 
 		//After
-		SS_Datetime::set_mock_now('2015-10-01 17:50:00');
-		$this->assertEquals('2015-10-03 12:00:00', $sched->getNextDateTime()->Format('Y-m-d H:i:s'));
+		SS_Datetime::set_mock_now('2015-10-02 22:50:00');
+		$this->assertEquals('2015-10-03 05:00:00', $sched->getNextDateTime()->Format('Y-m-d H:i:s'));
 	}
 
     public function testGetNextDateTimeOffDay() {
 		$sched = $this->objFromFixture('ScheduleRangeDay', 'schedDay1');
 
 		//After
-		SS_Datetime::set_mock_now('2015-10-02 11:50:00');
-		$this->assertEquals('2015-10-03 12:00:00', $sched->getNextDateTime()->Format('Y-m-d H:i:s'));
+		SS_Datetime::set_mock_now('2015-10-06 11:50:00');
+		$this->assertEquals('2015-10-09 05:00:00', $sched->getNextDateTime()->Format('Y-m-d H:i:s'));
 	}
 
 	public function testGetNextDateTimeOffDayOutOfTimeRange() {
 		$sched = $this->objFromFixture('ScheduleRangeDay', 'schedDay1');
 
 		//After
-		SS_Datetime::set_mock_now('2015-10-02 17:50:00');
-		$this->assertEquals('2015-10-03 12:00:00', $sched->getNextDateTime()->Format('Y-m-d H:i:s'));
+		SS_Datetime::set_mock_now('2015-10-06 22:50:00');
+		$this->assertEquals('2015-10-09 05:00:00', $sched->getNextDateTime()->Format('Y-m-d H:i:s'));
 	}
 
     public function testGetNextDateTimeDuring() {
