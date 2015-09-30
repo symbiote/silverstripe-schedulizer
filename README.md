@@ -15,4 +15,4 @@ Fun module for organising stuff to happen at arbitrary times in the future.
 This module is licensed under the BSD license at http://silverstripe.org/BSD-license
 
 ## Plan
-https://intranet.silverstripe.com.au/clients/ptv/ptv-development-code-pre-reviews/configurable-queuedjob-csheduling/?stage=Live
+https://intranet.silverstripe.com.au/clients/ptv/ptv-development-code-pre-reviews/configurable-queuedjob-scheduling/?

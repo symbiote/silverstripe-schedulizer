@@ -1,15 +1,23 @@
+ConfiguredSchedule:
+  ConfigSched1:
+    Type: 1
+    DefaultInterval: 3600
+    DefaultStartTime: 120000
+    DefaultEndTime: 235959
 ScheduleRange:
   sched1:
     Interval: 3600
     StartTime: 120000
-    EndTime: 235959
+    EndTime: 170000
     StartDate: 2015-10-01
-    EndDate: 2015-10-02
+    EndDate: 2015-10-05
+    ConfiguredSchedule: =>ConfiguredSchedule.ConfigSched1
 ScheduleRangeDay:
   schedDay1:
-    Interval: 3600
+    Interval: 1800
     StartTime: 120000
-    EndTime: 235959
+    EndTime: 170000
     StartDate: 2015-10-01
     EndDate: 2015-10-31
     ApplicableDays: Mon,Tue,Thu,Sat,Sun
+    ConfiguredSchedule: =>ConfiguredSchedule.ConfigSched1
