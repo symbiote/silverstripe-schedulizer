@@ -17,9 +17,11 @@ class ConfiguredSchedule  extends DataObject {
 		'ScheduleRanges'	=> 'ScheduleRange'
 	);
 
+	protected $currentSchedule = null;
+
 	public function getNextScheduledDateTime() {
 		$now = new DateTimeImmutable(SS_Datetime::now());
-		$return = null;
+		$return = NULL;
 		$tomorrow = $now->add(new DateInterval('P1D'))->setTime(23, 59, 59);
 		//filter SpecificRanges by end date
 		$currentRanges = $this->ScheduleRanges()->filter(array(
@@ -37,23 +39,36 @@ class ConfiguredSchedule  extends DataObject {
 			}
 		}
 
-		if(!empty($ranges['ScheduleRange']) && $ranges['ScheduleRange'] < $tomorrow) {
+		if(empty($ranges)) {
+			$this->currentSchedule = 'DefaultSchedule';
+			return $now->add(new DateInterval('PT' . $this->DefaultInterval . 'S'));
+		}
 
-			$return = $ranges['ScheduleRange'];
+		$scheduleRangesOrder = $this->config()->get('ScheduleRanges');
 
-		} elseif (!empty($ranges['ScheduleRangeDay']) && $ranges['ScheduleRangeDay'] < $tomorrow) {
+		foreach($scheduleRangesOrder as $schedulerange) {
+			if(isset($ranges[$schedulerange])) {
+				if ($ranges[$schedulerange] < $tomorrow) {
+					$return = $ranges[$schedulerange];
+					$this->currentSchedule = $schedulerange;
+					break;
+				}
+			}
+		}
 
-			$return = $ranges['ScheduleRangeDay'];
-
-		} elseif (empty($ranges['ScheduleRange']) || $ranges['ScheduleRange'] > $ranges['ScheduleRangeDay']) {
-
-			$return = $ranges['ScheduleRangeDay'];
-
-		} elseif(!empty($ranges['ScheduleRange'])) {
-
-			$return = $ranges['ScheduleRange'];
+		if($return === NULL) {
+			asort($ranges);
+			if(!empty($ranges)) {
+				$return = current($ranges);
+				reset($ranges);
+				$this->currentSchedule = key($ranges);
+			}
 		}
 
 		return $return;
+	}
+
+	public function getCurrentSchedule() {
+		return $this->currentSchedule;
 	}
 }

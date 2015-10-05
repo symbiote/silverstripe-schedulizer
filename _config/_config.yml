@@ -1,0 +1,5 @@
+ConfiguredSchedule:
+  ScheduleRanges:
+    - ScheduleRange
+    - ScheduleRangeDay
+    - ScheduleRangeDayType
