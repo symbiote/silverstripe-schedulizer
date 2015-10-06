@@ -7,9 +7,13 @@
  *
  * @author Stephen McMahon <stephen@silverstripe.com.au>
  */
+ini_set('display_errors',1);
+ini_set('display_startup_errors',1);
+error_reporting(-1);
 class ScheduleRange extends DataObject {
 
 	private static $db = array (
+		'Title'				=> 'VarChar',
 		//Seconds between scheduled times
 		'Interval'			=> 'Int',
 		'StartTime'			=> 'Time',
@@ -30,6 +34,67 @@ class ScheduleRange extends DataObject {
 	 */
 	protected $day = 0;
 
+	public function getCMSFields() {
+
+		$fields = parent::getCMSFields();
+
+		$fields->removeByName('ConfiguredScheduleID');
+
+		$interval = $fields->dataFieldByName('Interval')
+			->setDescription('Number of seconds between each run. e.g 3600 is 1 hour');
+		$fields->replaceField('Interval',
+			$interval
+		);
+
+		$fields->replaceField('StartDate',
+			DateField::create('StartDate')
+				->setConfig('dateformat', 'dd/MM/yyyy')
+				->setConfig('showcalendar', true)
+				->setDescription(
+					'DD/MM/YYYY e.g. ' . (new DateTime())->format('d/m/y')
+				)
+		);
+
+		$fields->replaceField('EndDate',
+			DateField::create('EndDate')
+				->setConfig('dateformat', 'dd/MM/yyyy')
+				->setConfig('showcalendar', true)
+				->setDescription(
+					'DD/MM/YYYY e.g. ' . (new DateTime())->format('d/m/y')
+				)
+		);
+
+		if ($this->ID == null) {
+			foreach ($fields->dataFields() as $field) {
+				//delete all included fields
+				$fields->removeByName($field->Name);
+			}
+
+			$rangeTypes = Config::inst()->get('ConfiguredSchedule', 'ScheduleRanges');
+			$rangeTypes = array_combine($rangeTypes, $rangeTypes);
+
+
+			$fields->addFieldToTab('Root.Main', TextField::create('Title', 'Title'));
+			$fields->addFieldToTab('Root.Main', DropdownField::create('ClassName', 'Range Type', $rangeTypes));
+
+		} elseif ($this->ClassName == __CLASS__) {
+
+			$fields->removeByName('ApplicableDays');
+		}
+
+		return $fields;
+	}
+
+	public function getCMSValidator() {
+        return new RequiredFields(array(
+            'Title',
+			'Interval',
+			'StartTime',
+			'EndTime',
+			'StartDate',
+			'EndDate'
+        ));
+    }
 
 	/**
 	 * Detrimines the next valid time and date for this schedule to execute

@@ -9,6 +9,22 @@
  */
 class ScheduleRangeDay extends ScheduleRange {
 
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
+
+		$fields->addFieldToTab('Root.Main', CheckboxSetField::create('ApplicableDays', 'Schedule Days', array (
+			'Mon'	=> 'Monday',
+			'Tue'	=> 'Tuesday',
+			'Wed'	=> 'Wednesday',
+			'Thu'	=> 'Thursday',
+			'Fri'	=> 'Friday',
+			'Sat'	=> 'Saturday',
+			'Sun'	=> 'Sunday'
+		)));
+
+		return $fields;
+	}
+
 	/**
 	 * Detrimines the next valid time and date for this schedule to execute
 	 *

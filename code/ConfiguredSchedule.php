@@ -7,7 +7,7 @@
 class ConfiguredSchedule  extends DataObject {
 
 	private static $db = array (
-		'Type'				=> 'Int',
+		'Title'				=> 'VarChar',
 		'DefaultInterval'	=> 'Int',
 		'DefaultStartTime'	=> 'Time',
 		'DefaultEndTime'	=> 'Time'
@@ -18,6 +18,16 @@ class ConfiguredSchedule  extends DataObject {
 	);
 
 	protected $currentSchedule = null;
+
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
+
+		if(!$this->DefaultInterval) $fields->dataFieldByName('DefaultInterval')->setValue(3600);
+		if(!$this->DefaultStartTime) $fields->dataFieldByName('DefaultStartTime')->setValue('12:00am');
+		if(!$this->DefaultEndTime) $fields->dataFieldByName('DefaultEndTime')->setValue(235959);
+
+		return $fields;
+	}
 
 	public function getNextScheduledDateTime() {
 		$now = new DateTimeImmutable(SS_Datetime::now());
@@ -67,6 +77,15 @@ class ConfiguredSchedule  extends DataObject {
 
 		return $return;
 	}
+
+	public function getCMSValidator() {
+        return new RequiredFields(array(
+            'Title',
+			'DefaultInterval',
+			'DefaultStartTime',
+			'DefaultEndTime'
+        ));
+    }
 
 	public function getCurrentSchedule() {
 		return $this->currentSchedule;
