@@ -7,6 +7,16 @@
  *
  * @author Stephen McMahon <stephen@silverstripe.com.au>
  */
-class ScheduleRangeDayType extends ScheduleRange {
+class ScheduleRangeDayType extends ScheduleRangeDay {
 
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
+
+		$fields->addFieldToTab('Root.Main', DropdownField::create('ApplicableDays', 'Schedule Day Type', array (
+			'Mon,Tue,Wed,Thu,Fri'	=> 'Weekdays',
+			'Sat,Sun'				=> 'Weekend'
+		)));
+
+		return $fields;
+	}
 }
