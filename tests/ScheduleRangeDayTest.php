@@ -4,9 +4,6 @@
  *
  * @author Stephen McMahon <stephen@silverstripe.com.au>
  */
-ini_set('display_errors',1);
-ini_set('display_startup_errors',1);
-error_reporting(-1);
 class ScheduleRangeDayTest extends SapphireTest {
 
 	static $fixture_file = 'schedulizer/tests/ScheduleRange.yml';
