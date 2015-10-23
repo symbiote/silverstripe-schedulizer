@@ -10,9 +10,13 @@ Fun module for organising stuff to happen at arbitrary times in the future.
 
 * SilverStripe 3.1
 
+## Usage
+
+* Create a Configured Schedule via the CMS admin
+* From code, call 
+  * `ConfiguredSchedule::get()->filter('Title', $name)->first()->getNextScheduledDateTime();`
+
 ## License
 
 This module is licensed under the BSD license at http://silverstripe.org/BSD-license
 
-## Plan
-https://intranet.silverstripe.com.au/clients/ptv/ptv-development-code-pre-reviews/configurable-queuedjob-scheduling/?

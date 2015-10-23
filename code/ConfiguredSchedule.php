@@ -8,23 +8,26 @@ class ConfiguredSchedule  extends DataObject {
 
 	private static $db = array (
 		'Title'				=> 'VarChar',
-		'DefaultInterval'	=> 'Int',
-		'DefaultStartTime'	=> 'Time',
-		'DefaultEndTime'	=> 'Time'
 	);
 
 	private static $has_many = array (
 		'ScheduleRanges'	=> 'ScheduleRange'
 	);
 
+	/**
+	 * @testdox only used for returning test data
+	 *
+	 * @var string
+	 */
 	protected $currentSchedule = null;
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 
-		if(!$this->DefaultInterval) $fields->dataFieldByName('DefaultInterval')->setValue(3600);
-		if(!$this->DefaultStartTime) $fields->dataFieldByName('DefaultStartTime')->setValue('12:00am');
-		if(!$this->DefaultEndTime) $fields->dataFieldByName('DefaultEndTime')->setValue(235959);
+		if ($this->ID) {
+			Requirements::javascript('schedulizer/js/schedulizer-admin.js');
+			$fields->addFieldToTab('Root.Main', LiteralField::create('testingbits', $this->renderWith('TestScheduleField')));
+		}
 
 		return $fields;
 	}
@@ -32,16 +35,19 @@ class ConfiguredSchedule  extends DataObject {
 	public function getNextScheduledDateTime() {
 		$now = new DateTimeImmutable(SS_Datetime::now());
 		$return = NULL;
-		$tomorrow = $now->add(new DateInterval('P1D'))->setTime(23, 59, 59);
+		
 		//filter SpecificRanges by end date
 		$currentRanges = $this->ScheduleRanges()->filter(array(
-			'EndDate:GreaterThan' => $now->format('Y-m-d H:i:s')
+			'EndDate:GreaterThanOrEqual' => $now->format('Y-m-d')
 		));
 		//loop each type and find a 'winner'
 		$ranges = array();
 
 		foreach ($currentRanges as $specficRange) {
 			$dateTime = $specficRange->getNextDateTime();
+			if (!$dateTime) {
+				continue;
+			}
 			if (isset($ranges[$specficRange->ClassName]) && $ranges[$specficRange->ClassName] > $dateTime) {
 				$ranges[$specficRange->ClassName] = $dateTime;
 			} elseif (!isset($ranges[$specficRange->ClassName])) {
@@ -50,28 +56,50 @@ class ConfiguredSchedule  extends DataObject {
 		}
 
 		if(empty($ranges)) {
-			$this->currentSchedule = 'DefaultSchedule';
-			return $now->add(new DateInterval('PT' . $this->DefaultInterval . 'S'));
+			$this->currentSchedule = 'None';
+			return null;
 		}
 
-		$scheduleRangesOrder = $this->config()->get('ScheduleRanges');
+		
 
+		// prune the collected list back to those that fall on the _next available day_
+		asort($ranges);
+		$earliestDay = '';
+		$candidates = array();
+		foreach ($ranges as $key => $time) {
+			// take the day of the given time
+			$timeDay = $time->format('Y-m-d');
+			
+			// no 'earliest' just yet
+			if (!$earliestDay) {
+				$earliestDay = $timeDay;
+				$candidates[$key] = $time;
+				continue;
+			}
+			
+			// if the same, add to candidates
+			if ($earliestDay == $timeDay && !isset($candidates[$key])) {
+				$candidates[$key] = $time;
+			}
+		}
+		
+		// now, let's check the day based precedence
+		$scheduleRangesOrder = $this->config()->get('schedule_range_precedence');
 		foreach($scheduleRangesOrder as $schedulerange) {
-			if(isset($ranges[$schedulerange])) {
-				if ($ranges[$schedulerange] < $tomorrow) {
-					$return = $ranges[$schedulerange];
-					$this->currentSchedule = $schedulerange;
-					break;
-				}
+			$comparisonRange = isset($candidates[$schedulerange]) ? $candidates[$schedulerange] : null;
+			if($comparisonRange) {
+				$return = $comparisonRange;
+				$this->currentSchedule = $schedulerange;
+				break;
 			}
 		}
 
+		// otherwise, we just take the next available time regardless of source
 		if($return === NULL) {
-			asort($ranges);
-			if(!empty($ranges)) {
-				$return = current($ranges);
-				reset($ranges);
-				$this->currentSchedule = key($ranges);
+			if(!empty($candidates)) {
+				$return = current($candidates);
+				reset($candidates);
+				$this->currentSchedule = key($candidates);
 			}
 		}
 
@@ -81,12 +109,14 @@ class ConfiguredSchedule  extends DataObject {
 	public function getCMSValidator() {
         return new RequiredFields(array(
             'Title',
-			'DefaultInterval',
-			'DefaultStartTime',
-			'DefaultEndTime'
         ));
     }
 
+	/**
+	 * @testdox
+	 * 
+	 * @return string
+	 */
 	public function getCurrentSchedule() {
 		return $this->currentSchedule;
 	}

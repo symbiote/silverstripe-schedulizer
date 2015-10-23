@@ -17,7 +17,7 @@ class ScheduleRange extends DataObject {
 		'EndTime'			=> 'Time',
 		'StartDate'			=> 'Date',
 		'EndDate'			=> 'Date',
-		//Days this schedule is valid (e.g 'Monday,Tuesday,Wednesday,Thrusday,Friday')
+		//Days this schedule is valid (e.g 'Monday,Tuesday,Wednesday,Thrusday,Friday,Weekend,Weekday')
 		'ApplicableDays'	=> 'VarChar'
 	);
 
@@ -70,7 +70,6 @@ class ScheduleRange extends DataObject {
 			$rangeTypes = Config::inst()->get('ConfiguredSchedule', 'ScheduleRanges');
 			$rangeTypes = array_combine($rangeTypes, $rangeTypes);
 
-
 			$fields->addFieldToTab('Root.Main', TextField::create('Title', 'Title'));
 			$fields->addFieldToTab('Root.Main', DropdownField::create('ClassName', 'Range Type', $rangeTypes));
 
@@ -99,17 +98,16 @@ class ScheduleRange extends DataObject {
 	 * @return object|null DateTime
 	 */
 	public function getNextDateTime() {
-
+		$this->day = 0;
 		return $this->getScheduleDateTime();
 	}
 
 	protected function getScheduleDateTime() {
-
 		$now = new Datetime(SS_Datetime::now()->Format(DateTime::ATOM));
 		// Presume where checking at a point before the StartDate
 		$nextDateTime = $this->getStartDateTime();
-
-		if($now > $this->getStartDateTime()) {
+		
+		if($now >= $this->getStartDateTime()) {
 			//Inside the ScheduleRange so set nextDateTime to now + interval
 			$nextDateTime = $now->add(new DateInterval('PT' . $this->Interval . 'S'));
 		}
@@ -149,6 +147,15 @@ class ScheduleRange extends DataObject {
 
 	protected function getScheduleDay() {
 		$scheduleDay = new Datetime($this->StartDate .' '. $this->StartTime);
+		$now = new Datetime(SS_Datetime::now()->Format(DateTime::ATOM));
+		
+		// make sure that the 'day' we start looking from is close to 'now' so our
+		// loops don't work through days that don't matter
+		if (!$this->day && $now > $scheduleDay) {
+			$diff = $now->diff($scheduleDay)->format("%r%a");
+			$this->day = abs($diff);
+		}
+		
 		$scheduleDay->add(new DateInterval("P{$this->day}D"));
 		return $scheduleDay->format('Y-m-d');
 	}

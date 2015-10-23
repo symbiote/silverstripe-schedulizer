@@ -1,5 +1,6 @@
 ConfiguredSchedule:
-  ScheduleRanges:
+  schedule_range_precedence:
     - ScheduleRange
     - ScheduleRangeDay
     - ScheduleRangeDayType
+    - ScheduleRangeDefault

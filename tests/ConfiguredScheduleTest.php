@@ -51,10 +51,13 @@ class ConfiguredScheduleTest extends SapphireTest {
 	}
 
     public function testGetNextDateTimeAfterSR() {
-		$sched = $this->objFromFixture('ConfiguredSchedule', 'ConfigSched1');
-
-		//After
-		SS_Datetime::set_mock_now('2015-10-14 11:00:00');
+		$sched = $this->objFromFixture('ConfiguredSchedule', 'ConfigSched3');
+		// After
+		SS_Datetime::set_mock_now('2015-10-06 12:00:00');
+		$this->assertEquals('2015-10-08 12:00:00', $sched->getNextScheduledDateTime()->Format('Y-m-d H:i:s'));
+		$this->assertEquals('ScheduleRange', $sched->getCurrentSchedule());
+		
+		SS_Datetime::set_mock_now('2015-10-13 18:00:00');
 		$this->assertEquals('2015-10-16 05:00:00', $sched->getNextScheduledDateTime()->Format('Y-m-d H:i:s'));
 		$this->assertEquals('ScheduleRangeDay', $sched->getCurrentSchedule());
 	}
@@ -70,11 +73,11 @@ class ConfiguredScheduleTest extends SapphireTest {
 
 	public function testGetNextDateTimeAfterSRD() {
 		$sched = $this->objFromFixture('ConfiguredSchedule', 'ConfigSched1');
-
+		
 		//During
 		SS_Datetime::set_mock_now('2015-11-01 12:00:00');
 		$this->assertEquals('2015-11-01 14:00:00', $sched->getNextScheduledDateTime()->Format('Y-m-d H:i:s'));
-		$this->assertEquals('DefaultSchedule', $sched->getCurrentSchedule());
+		$this->assertEquals('ScheduleRangeDefault', $sched->getCurrentSchedule());
 	}
 
 
@@ -110,7 +113,44 @@ class ConfiguredScheduleTest extends SapphireTest {
 
 		//During
 		SS_Datetime::set_mock_now('2015-10-03 16:45:00');
-		$this->assertEquals('2015-10-04 12:00:00', $sched->getNextScheduledDateTime()->Format('Y-m-d H:i:s'));
-		$this->assertEquals('ScheduleRange', $sched->getCurrentSchedule());
+		// triggers the day based rule, as Oct-03 is a saturday, meaning its range goes 5am -> 22pm, every 30 minutes
+		$this->assertEquals('2015-10-03 17:15:00', $sched->getNextScheduledDateTime()->Format('Y-m-d H:i:s'));
+		$this->assertEquals('ScheduleRangeDay', $sched->getCurrentSchedule());
+	}
+	
+	public function testPrecedence() {
+		$sched = $this->objFromFixture('ConfiguredSchedule', 'ConfigSched2');
+		
+		$times = array();
+		
+		SS_Datetime::set_mock_now('2015-10-22 23:55:00');
+		$times[] = $sched->getNextScheduledDateTime()->Format('Y-m-d H:i:s');
+		
+		SS_Datetime::set_mock_now('2015-10-23 00:00:00');
+		$times[] = $sched->getNextScheduledDateTime()->Format('Y-m-d H:i:s');
+		
+		SS_Datetime::set_mock_now('2015-10-23 05:00:00');
+		$times[] = $sched->getNextScheduledDateTime()->Format('Y-m-d H:i:s');
+		
+		SS_Datetime::set_mock_now('2015-10-23 23:55:00');
+		$times[] = $sched->getNextScheduledDateTime()->Format('Y-m-d H:i:s');
+		
+		SS_Datetime::set_mock_now('2015-10-24 04:00:00');
+		$times[] = $sched->getNextScheduledDateTime()->Format('Y-m-d H:i:s');
+		
+		SS_Datetime::set_mock_now('2015-10-24 23:55:00');
+		$times[] = $sched->getNextScheduledDateTime()->Format('Y-m-d H:i:s');
+		
+		// sunday evening
+		SS_Datetime::set_mock_now('2015-10-25 23:55:00');
+		$times[] = $sched->getNextScheduledDateTime()->Format('Y-m-d H:i:s');
+		
+		$this->assertEquals('2015-10-23 06:00:00', $times[0]);
+		$this->assertEquals('2015-10-23 06:00:00', $times[1]);
+		$this->assertEquals('2015-10-23 06:00:00', $times[2]);
+		$this->assertEquals('2015-10-24 05:00:00', $times[3]);
+		$this->assertEquals('2015-10-24 05:00:00', $times[4]);
+		$this->assertEquals('2015-10-25 05:00:00', $times[5]);
+		$this->assertEquals('2015-10-26 06:00:00', $times[6]);
 	}
 }
