@@ -33,7 +33,7 @@ class ConfiguredSchedule  extends DataObject {
 	}
 
 	public function getNextScheduledDateTime() {
-		$now = new DateTimeImmutable(SS_Datetime::now());
+		$now = new DateTime(SS_Datetime::now());
 		$return = NULL;
 		
 		//filter SpecificRanges by end date
@@ -59,8 +59,6 @@ class ConfiguredSchedule  extends DataObject {
 			$this->currentSchedule = 'None';
 			return null;
 		}
-
-		
 
 		// prune the collected list back to those that fall on the _next available day_
 		asort($ranges);

@@ -43,12 +43,14 @@ class ScheduleRange extends DataObject {
 			$interval
 		);
 
+		$dt = new DateTime();
+		
 		$fields->replaceField('StartDate',
 			DateField::create('StartDate')
 				->setConfig('dateformat', 'dd/MM/yyyy')
 				->setConfig('showcalendar', true)
 				->setDescription(
-					'DD/MM/YYYY e.g. ' . (new DateTime())->format('d/m/y')
+					'DD/MM/YYYY e.g. ' . $dt->format('d/m/y')
 				)
 		);
 
@@ -57,7 +59,7 @@ class ScheduleRange extends DataObject {
 				->setConfig('dateformat', 'dd/MM/yyyy')
 				->setConfig('showcalendar', true)
 				->setDescription(
-					'DD/MM/YYYY e.g. ' . (new DateTime())->format('d/m/y')
+					'DD/MM/YYYY e.g. ' . $dt->format('d/m/y')
 				)
 		);
 
@@ -66,15 +68,17 @@ class ScheduleRange extends DataObject {
 				//delete all included fields
 				$fields->removeByName($field->Name);
 			}
-
-			$rangeTypes = Config::inst()->get('ConfiguredSchedule', 'ScheduleRanges');
-			$rangeTypes = array_combine($rangeTypes, $rangeTypes);
+			
+			$rangeTypes = ClassInfo::subclassesFor('ScheduleRange');
 
 			$fields->addFieldToTab('Root.Main', TextField::create('Title', 'Title'));
 			$fields->addFieldToTab('Root.Main', DropdownField::create('ClassName', 'Range Type', $rangeTypes));
 
-		} elseif ($this->ClassName == __CLASS__) {
-
+		} else {
+			$fields->addFieldToTab('Root.Main', ReadonlyField::create('ClassName', 'Type'));
+		}
+		
+		if ($this->ClassName == __CLASS__) {
 			$fields->removeByName('ApplicableDays');
 		}
 
@@ -82,14 +86,16 @@ class ScheduleRange extends DataObject {
 	}
 
 	public function getCMSValidator() {
-        return new RequiredFields(array(
-            'Title',
-			'Interval',
-			'StartTime',
-			'EndTime',
-			'StartDate',
-			'EndDate'
-        ));
+		if ($this->ID) {
+			return new RequiredFields(array(
+				'Title',
+				'Interval',
+				'StartTime',
+				'EndTime',
+				'StartDate',
+				'EndDate'
+			));
+		}
     }
 
 	/**
