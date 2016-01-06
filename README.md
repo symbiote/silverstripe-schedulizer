@@ -4,11 +4,13 @@ Fun module for organising stuff to happen at arbitrary times in the future.
 
 ## Maintainer Contacts
 
-* Stephen McMahon <stephen@silverstripe.com.au
+* Stephen McMahon <stephen@silverstripe.com.au>
+* Marcus Nyeholt <marcus@silverstripe.com.au>
 
 ## Requirements
 
 * SilverStripe 3.1
+
 
 ## Usage
 
