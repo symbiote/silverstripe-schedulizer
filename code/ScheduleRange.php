@@ -86,16 +86,18 @@ class ScheduleRange extends DataObject {
 	}
 
 	public function getCMSValidator() {
+        $fields = array('Title');
 		if ($this->ID) {
-			return new RequiredFields(array(
+			$fields = array(
 				'Title',
 				'Interval',
 				'StartTime',
 				'EndTime',
 				'StartDate',
 				'EndDate'
-			));
-		}
+			);
+		} 
+        return new RequiredFields($fields);
     }
 
 	/**
