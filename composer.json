@@ -1,5 +1,5 @@
 {
-	"name": "silverstripe-australia/silverstripe-schedulizer",
+	"name": "symbiote/silverstripe-schedulizer",
 	"description": "A module for organising stuff to happen at arbitrary times in the future, useful with QueuedJobs",
 	"type": "silverstripe-module",
 	"keywords": ["silverstripe", "schedule","queuedjobs"],
@@ -18,7 +18,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "1.0.x-dev"
+			"dev-master": "2.0.x-dev"
 		},
 		"installer-name": "schedulizer"
 	},
