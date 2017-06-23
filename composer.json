@@ -7,11 +7,11 @@
 	"authors": [
 		{
 			"name": "Stephen McMahon",
-			"email": "stephen@silverstripe.com.au"
+			"email": "stephen@symbiote.com.au"
 		},
 		{
 			"name": "Marcus Nyeholt",
-			"email": "marcus@silverstripe.com.au"
+			"email": "marcus@symbiote.com.au"
 		}
 	],
 	"require": {

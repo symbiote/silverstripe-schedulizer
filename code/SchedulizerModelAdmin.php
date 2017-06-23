@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Stephen McMahon <stephen@silverstripe.com.au>
+ * @author Stephen McMahon <stephen@symbiote.com.au>
  */
 class SchedulizerModelAdmin extends ModelAdmin {
 	private static $menu_title = 'Schedulizer';

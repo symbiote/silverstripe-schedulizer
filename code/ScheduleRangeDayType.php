@@ -5,7 +5,7 @@
  * - specific day range (e.g Mon to Friday)
  * - specific day type range (e.g Weekday or Weekend)
  *
- * @author Stephen McMahon <stephen@silverstripe.com.au>
+ * @author Stephen McMahon <stephen@symbiote.com.au>
  */
 class ScheduleRangeDayType extends ScheduleRangeDay {
 
