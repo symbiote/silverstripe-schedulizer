@@ -22,6 +22,9 @@
 		},
 		"installer-name": "schedulizer"
 	},
+	"replace": {
+		"silverstripe-australia/silverstripe-schedulizer": "self.version"
+	},
 	"suggest": {
 	}
 }
