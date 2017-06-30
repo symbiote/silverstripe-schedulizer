@@ -1,6 +1,5 @@
 <?php
 /**
- * Description of ConfiguredSchedule
  *
  * @author Stephen McMahon <stephen@symbiote.com.au>
  */
