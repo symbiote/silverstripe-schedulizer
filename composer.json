@@ -17,10 +17,10 @@
 	"require": {
 	},
 	"extra": {
+		"installer-name": "schedulizer",
 		"branch-alias": {
 			"dev-master": "2.0.x-dev"
-		},
-		"installer-name": "schedulizer"
+		}
 	},
 	"replace": {
 		"silverstripe-australia/silverstripe-schedulizer": "self.version"
