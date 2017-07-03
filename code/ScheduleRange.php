@@ -112,23 +112,33 @@ class ScheduleRange extends DataObject {
 
 	protected function getScheduleDateTime() {
 		$now = new Datetime(SS_Datetime::now()->Format(DateTime::ATOM));
-		// Presume where checking at a point before the StartDate
+		// get a start time for 'today'
 		$nextDateTime = $this->getStartDateTime();
 		
-		if($now >= $this->getStartDateTime()) {
+		if($now >= $nextDateTime) {
 			//Inside the ScheduleRange so set nextDateTime to now + interval
 			$nextDateTime = $now->add(new DateInterval('PT' . $this->Interval . 'S'));
 		}
 
-		if ($nextDateTime > $this->getEndDateTime()) {
+        // and an end-time for 'today'
+        $todayEndTime = $this->getEndDateTime();
+
+        $lastEndTime = $this->getLastScheduleTime();
+
+		if ($nextDateTime > $todayEndTime) {
 			//Now + interval falls outside the Schedule range
-			if($nextDateTime > $this->getLastScheduleTime()) {
+			if($nextDateTime > $lastEndTime) {
 				$nextDateTime = null;
 			} else {
 				$this->goToNextDay();
 				$nextDateTime = $this->getScheduleDateTime();
 			}
 		}
+
+        // lastly, compare the very last date time.
+        if($nextDateTime > $lastEndTime) {
+            $nextDateTime = null;
+        }
 
 		return $nextDateTime;
 	}
@@ -153,9 +163,16 @@ class ScheduleRange extends DataObject {
 		return new Datetime($this->EndDate .' '. $this->EndTime);
 	}
 
+    public function __accessForgetScheduleDay() {
+
+    }
+
 	protected function getScheduleDay() {
 		$scheduleDay = new Datetime($this->StartDate .' '. $this->StartTime);
-		$now = new Datetime(SS_Datetime::now()->Format(DateTime::ATOM));
+
+        // we use $this->StartTime, because if we leave it as 'now' time, we may actually be closer to
+        // the _next_ day, and the diff logic further on will instead return +1 day more than we expect. 
+		$now = new Datetime(SS_Datetime::now()->Format('Y-m-d ' . $this->StartTime));
 		
 		// make sure that the 'day' we start looking from is close to 'now' so our
 		// loops don't work through days that don't matter

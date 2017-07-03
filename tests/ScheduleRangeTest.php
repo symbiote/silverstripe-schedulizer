@@ -33,7 +33,8 @@ class ScheduleRangeTest extends SapphireTest {
 
 		//After
 		SS_Datetime::set_mock_now('2015-10-06 11:50:00');
-		$this->assertEquals(null, $sched->getNextDateTime());
+        $result = $sched->getNextDateTime();
+		$this->assertEquals(null, $result);
 	}
 
     public function testGetNextDateTimeDuring() {
