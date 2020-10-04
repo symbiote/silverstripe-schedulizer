@@ -1,4 +1,8 @@
 <?php
+
+use Sunnysideup\Schedulizer\ScheduleRange;
+use SilverStripe\ORM\FieldType\DBDatetime;
+use SilverStripe\Dev\SapphireTest;
 /**
  * Description of ScheduleRangeTest
  *
@@ -20,36 +24,36 @@ class ScheduleRangeTest extends SapphireTest {
 	 */
 
     public function testGetNextDateTimeBefore() {
-		$sched = $this->objFromFixture('ScheduleRange', 'sched1');
+		$sched = $this->objFromFixture(ScheduleRange::class, 'sched1');
 
 		//Before
-		SS_Datetime::set_mock_now('2015-10-01 11:50:00');
+		DBDatetime::set_mock_now('2015-10-01 11:50:00');
 
 		$this->assertEquals('2015-10-01 12:00:00', $sched->getNextDateTime()->Format('Y-m-d H:i:s'));
 	}
 
     public function testGetNextDateTimeAfter() {
-		$sched = $this->objFromFixture('ScheduleRange', 'sched1');
+		$sched = $this->objFromFixture(ScheduleRange::class, 'sched1');
 
 		//After
-		SS_Datetime::set_mock_now('2015-10-06 11:50:00');
+		DBDatetime::set_mock_now('2015-10-06 11:50:00');
         $result = $sched->getNextDateTime();
 		$this->assertEquals(null, $result);
 	}
 
     public function testGetNextDateTimeDuring() {
-		$sched = $this->objFromFixture('ScheduleRange', 'sched1');
+		$sched = $this->objFromFixture(ScheduleRange::class, 'sched1');
 
 		//During
-		SS_Datetime::set_mock_now('2015-10-02 12:30:00');
+		DBDatetime::set_mock_now('2015-10-02 12:30:00');
 		$this->assertEquals('2015-10-02 13:30:00', $sched->getNextDateTime()->Format('Y-m-d H:i:s'));
 	}
 
     public function testGetNextDateTimeDuringAfterTimeRange() {
-		$sched = $this->objFromFixture('ScheduleRange', 'sched1');
+		$sched = $this->objFromFixture(ScheduleRange::class, 'sched1');
 
 		//During
-		SS_Datetime::set_mock_now('2015-10-02 17:30:00');
+		DBDatetime::set_mock_now('2015-10-02 17:30:00');
 		$this->assertEquals('2015-10-03 12:00:00', $sched->getNextDateTime()->Format('Y-m-d H:i:s'));
 	}
 }

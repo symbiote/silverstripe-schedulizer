@@ -2,8 +2,12 @@
 
 namespace Sunnysideup\Schedulizer;
 
-use ModelAdmin;
-use SS_Datetime;
+
+
+use Sunnysideup\Schedulizer\ConfiguredSchedule;
+use SilverStripe\ORM\FieldType\DBDatetime;
+use SilverStripe\Admin\ModelAdmin;
+
 
 /**
  * @author Stephen McMahon <stephen@symbiote.com.au>
@@ -13,7 +17,7 @@ class SchedulizerModelAdmin extends ModelAdmin {
 	private static $url_segment = 'schedulizer';
 
 	private static $managed_models = array(
-		'ConfiguredSchedule'
+		ConfiguredSchedule::class
 	);
 
 	private static $allowed_actions = array(
@@ -30,7 +34,7 @@ class SchedulizerModelAdmin extends ModelAdmin {
 			return 'Invalid date';
 		}
 		$date = date('Y-m-d H:i:s', $time);
-		SS_Datetime::set_mock_now($date);
+		DBDatetime::set_mock_now($date);
 		
 		$dateTime = $schedule->getNextScheduledDateTime();
 		if ($dateTime) {

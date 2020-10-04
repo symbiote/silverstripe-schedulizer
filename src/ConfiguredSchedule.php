@@ -2,12 +2,19 @@
 
 namespace Sunnysideup\Schedulizer;
 
-use DataObject;
-use Requirements;
-use LiteralField;
+
+
+
 use DateTime;
-use SS_Datetime;
-use RequiredFields;
+
+
+use Sunnysideup\Schedulizer\ScheduleRange;
+use SilverStripe\View\Requirements;
+use SilverStripe\Forms\LiteralField;
+use SilverStripe\ORM\FieldType\DBDatetime;
+use SilverStripe\Forms\RequiredFields;
+use SilverStripe\ORM\DataObject;
+
 
 /**
  *
@@ -34,7 +41,7 @@ class ConfiguredSchedule  extends DataObject {
 	);
 
 	private static $has_many = array (
-		'ScheduleRanges'	=> 'ScheduleRange'
+		'ScheduleRanges'	=> ScheduleRange::class
 	);
 
 	/**
@@ -65,7 +72,7 @@ class ConfiguredSchedule  extends DataObject {
 	}
 
 	public function getNextScheduledDateTime() {
-		$now = new DateTime(SS_Datetime::now());
+		$now = new DateTime(DBDatetime::now());
 		$return = NULL;
 		
 		//filter SpecificRanges by end date

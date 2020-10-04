@@ -2,17 +2,27 @@
 
 namespace Sunnysideup\Schedulizer;
 
-use DataObject;
+
 use DateTime;
-use DateField;
-use ClassInfo;
-use TextField;
-use DropdownField;
-use ReadonlyField;
-use RequiredFields;
-use Datetime;
-use SS_Datetime;
+
+
+
+
+
+
+
 use DateInterval;
+use Sunnysideup\Schedulizer\ConfiguredSchedule;
+use SilverStripe\Forms\DateField;
+use Sunnysideup\Schedulizer\ScheduleRange;
+use SilverStripe\Core\ClassInfo;
+use SilverStripe\Forms\TextField;
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\ReadonlyField;
+use SilverStripe\Forms\RequiredFields;
+use SilverStripe\ORM\FieldType\DBDatetime;
+use SilverStripe\ORM\DataObject;
+
 
 /**
  * A date range class that can hold:
@@ -28,14 +38,14 @@ class ScheduleRange extends DataObject {
 /**
   * ### @@@@ START REPLACEMENT @@@@ ###
   * OLD: private static $db (case sensitive)
-  * NEW: 
+  * NEW:
     private static $table_name = '[SEARCH_REPLACE_CLASS_NAME_GOES_HERE]';
 
     private static $db (COMPLEX)
   * EXP: Check that is class indeed extends DataObject and that it is not a data-extension!
   * ### @@@@ STOP REPLACEMENT @@@@ ###
   */
-	
+
     private static $table_name = 'ScheduleRange';
 
     private static $db = array (
@@ -51,7 +61,7 @@ class ScheduleRange extends DataObject {
 	);
 
 	private static $has_one = array(
-		'ConfiguredSchedule' => 'ConfiguredSchedule'
+		'ConfiguredSchedule' => ConfiguredSchedule::class
 	);
 
 	/**
@@ -73,7 +83,7 @@ class ScheduleRange extends DataObject {
 		);
 
 		$dt = new DateTime();
-		
+
 		$fields->replaceField('StartDate',
 			DateField::create('StartDate')
 				->setConfig('dateformat', 'dd/MM/yyyy')
@@ -115,8 +125,8 @@ class ScheduleRange extends DataObject {
 				//delete all included fields
 				$fields->removeByName($field->Name);
 			}
-			
-			$rangeTypes = ClassInfo::subclassesFor('ScheduleRange');
+
+			$rangeTypes = ClassInfo::subclassesFor(ScheduleRange::class);
 
 			$fields->addFieldToTab('Root.Main', TextField::create('Title', 'Title'));
 			$fields->addFieldToTab('Root.Main', DropdownField::create('ClassName', 'Range Type', $rangeTypes));
@@ -124,7 +134,7 @@ class ScheduleRange extends DataObject {
 		} else {
 			$fields->addFieldToTab('Root.Main', ReadonlyField::create('ClassName', 'Type'));
 		}
-		
+
 
 /**
   * ### @@@@ START REPLACEMENT @@@@ ###
@@ -152,7 +162,7 @@ class ScheduleRange extends DataObject {
 				'StartDate',
 				'EndDate'
 			);
-		} 
+		}
         return new RequiredFields($fields);
     }
 
@@ -167,10 +177,10 @@ class ScheduleRange extends DataObject {
 	}
 
 	protected function getScheduleDateTime() {
-		$now = new Datetime(SS_Datetime::now()->Format(DateTime::ATOM));
+		$now = new Datetime(DBDatetime::now()->Format(DateTime::ATOM));
 		// get a start time for 'today'
 		$nextDateTime = $this->getStartDateTime();
-		
+
 		if($now >= $nextDateTime) {
 			//Inside the ScheduleRange so set nextDateTime to now + interval
 			$nextDateTime = $now->add(new DateInterval('PT' . $this->Interval . 'S'));
@@ -227,9 +237,9 @@ class ScheduleRange extends DataObject {
 		$scheduleDay = new Datetime($this->StartDate .' '. $this->StartTime);
 
         // we use $this->StartTime, because if we leave it as 'now' time, we may actually be closer to
-        // the _next_ day, and the diff logic further on will instead return +1 day more than we expect. 
-		$now = new Datetime(SS_Datetime::now()->Format('Y-m-d ' . $this->StartTime));
-		
+        // the _next_ day, and the diff logic further on will instead return +1 day more than we expect.
+		$now = new Datetime(DBDatetime::now()->Format('Y-m-d ' . $this->StartTime));
+
 		// make sure that the 'day' we start looking from is close to 'now' so our
 		// loops don't work through days that don't matter
 		if (!$this->day && $now > $scheduleDay) {
@@ -245,7 +255,7 @@ class ScheduleRange extends DataObject {
 			$diff = $now->diff($scheduleDay)->format("%r%a");
 			$this->day = abs($diff);
 		}
-		
+
 		$scheduleDay->add(new DateInterval("P{$this->day}D"));
 
 /**
@@ -272,4 +282,3 @@ class ScheduleRange extends DataObject {
 		$this->day++;
 	}
 }
-

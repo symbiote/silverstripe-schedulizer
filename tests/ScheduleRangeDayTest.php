@@ -1,4 +1,8 @@
 <?php
+
+use Sunnysideup\Schedulizer\ScheduleRangeDay;
+use SilverStripe\ORM\FieldType\DBDatetime;
+use SilverStripe\Dev\SapphireTest;
 /**
  * Description of ScheduleRangeTest
  *
@@ -26,42 +30,42 @@ class ScheduleRangeDayTest extends SapphireTest {
 	 */
 
     public function testGetNextDateTimeOnDay() {
-		$sched = $this->objFromFixture('ScheduleRangeDay', 'schedDay1');
+		$sched = $this->objFromFixture(ScheduleRangeDay::class, 'schedDay1');
 
 		//Before
-		SS_Datetime::set_mock_now('2015-10-02 04:50:00');
+		DBDatetime::set_mock_now('2015-10-02 04:50:00');
 		$this->assertEquals('2015-10-02 05:00:00', $sched->getNextDateTime()->Format('Y-m-d H:i:s'));
 	}
 
     public function testGetNextDateTimeOnDayOutOfTimeRange() {
-		$sched = $this->objFromFixture('ScheduleRangeDay', 'schedDay1');
+		$sched = $this->objFromFixture(ScheduleRangeDay::class, 'schedDay1');
 
 		//After
-		SS_Datetime::set_mock_now('2015-10-02 22:50:00');
+		DBDatetime::set_mock_now('2015-10-02 22:50:00');
 		$this->assertEquals('2015-10-03 05:00:00', $sched->getNextDateTime()->Format('Y-m-d H:i:s'));
 	}
 
     public function testGetNextDateTimeOffDay() {
-		$sched = $this->objFromFixture('ScheduleRangeDay', 'schedDay1');
+		$sched = $this->objFromFixture(ScheduleRangeDay::class, 'schedDay1');
 
 		//After
-		SS_Datetime::set_mock_now('2015-10-06 11:50:00');
+		DBDatetime::set_mock_now('2015-10-06 11:50:00');
 		$this->assertEquals('2015-10-09 05:00:00', $sched->getNextDateTime()->Format('Y-m-d H:i:s'));
 	}
 
 	public function testGetNextDateTimeOffDayOutOfTimeRange() {
-		$sched = $this->objFromFixture('ScheduleRangeDay', 'schedDay1');
+		$sched = $this->objFromFixture(ScheduleRangeDay::class, 'schedDay1');
 
 		//After
-		SS_Datetime::set_mock_now('2015-10-06 22:50:00');
+		DBDatetime::set_mock_now('2015-10-06 22:50:00');
 		$this->assertEquals('2015-10-09 05:00:00', $sched->getNextDateTime()->Format('Y-m-d H:i:s'));
 	}
 
     public function testGetNextDateTimeDuring() {
-		$sched = $this->objFromFixture('ScheduleRangeDay', 'schedDay1');
+		$sched = $this->objFromFixture(ScheduleRangeDay::class, 'schedDay1');
 
 		//During
-		SS_Datetime::set_mock_now('2015-10-03 12:30:00');
+		DBDatetime::set_mock_now('2015-10-03 12:30:00');
 		$this->assertEquals('2015-10-03 13:00:00', $sched->getNextDateTime()->Format('Y-m-d H:i:s'));
 	}
 }

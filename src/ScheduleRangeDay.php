@@ -2,8 +2,10 @@
 
 namespace Sunnysideup\Schedulizer;
 
-use CheckboxSetField;
+
 use DateInterval;
+use SilverStripe\Forms\CheckboxSetField;
+
 
 /**
  * A date range class that can hold:

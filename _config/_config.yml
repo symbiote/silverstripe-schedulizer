@@ -1,6 +1,6 @@
-ConfiguredSchedule:
+Sunnysideup\Schedulizer\ConfiguredSchedule:
   schedule_range_precedence:
-    - ScheduleRange
-    - ScheduleRangeDay
-    - ScheduleRangeDayType
-    - ScheduleRangeDefault
+    - Sunnysideup\Schedulizer\ScheduleRange
+    - Sunnysideup\Schedulizer\ScheduleRangeDay
+    - Sunnysideup\Schedulizer\ScheduleRangeDayType
+    - Sunnysideup\Schedulizer\ScheduleRangeDefault

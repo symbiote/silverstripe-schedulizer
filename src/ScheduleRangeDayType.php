@@ -2,7 +2,9 @@
 
 namespace Sunnysideup\Schedulizer;
 
-use DropdownField;
+
+use SilverStripe\Forms\DropdownField;
+
 
 /**
  * A date range class that can hold:
