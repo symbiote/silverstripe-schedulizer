@@ -36,14 +36,6 @@ class ScheduleRange extends DataObject
      */
     protected $day = 0;
 
-    /**
-     * ### @@@@ START REPLACEMENT @@@@ ###
-     * OLD: private static $db (case sensitive)
-     * NEW:
-    private static $db (COMPLEX)
-     * EXP: Check that is class indeed extends DataObject and that it is not a data-extension!
-     * ### @@@@ STOP REPLACEMENT @@@@ ###
-     */
     private static $table_name = 'ScheduleRange';
 
     private static $db = [
@@ -87,15 +79,7 @@ class ScheduleRange extends DataObject
                 ->setConfig('dateformat', 'dd/MM/yyyy')
                 ->setConfig('showcalendar', true)
                 ->setDescription(
-                    /**
-                     * ### @@@@ START REPLACEMENT @@@@ ###
-                     * WHY: automated upgrade
-                     * OLD: ->format( (case sensitive)
-                     * NEW: ->format( (COMPLEX)
-                     * EXP: If this is a PHP Date format call then this needs to be changed to new Date formatting system. (see http://userguide.icu-project.org/formatparse/datetime)
-                     * ### @@@@ STOP REPLACEMENT @@@@ ###
-                     */
-                    'DD/MM/YYYY e.g. ' . $dt->format('d/m/y')
+                    'DD/MM/YYYY e.g. ' . $dt->format('dd/MM/yyyy')
                 )
         );
 
@@ -105,15 +89,7 @@ class ScheduleRange extends DataObject
                 ->setConfig('dateformat', 'dd/MM/yyyy')
                 ->setConfig('showcalendar', true)
                 ->setDescription(
-                    /**
-                     * ### @@@@ START REPLACEMENT @@@@ ###
-                     * WHY: automated upgrade
-                     * OLD: ->format( (case sensitive)
-                     * NEW: ->format( (COMPLEX)
-                     * EXP: If this is a PHP Date format call then this needs to be changed to new Date formatting system. (see http://userguide.icu-project.org/formatparse/datetime)
-                     * ### @@@@ STOP REPLACEMENT @@@@ ###
-                     */
-                    'DD/MM/YYYY e.g. ' . $dt->format('d/m/y')
+                    'DD/MM/YYYY e.g. ' . $dt->format('dd/MM/yyyy')
                 )
         );
 
@@ -131,14 +107,6 @@ class ScheduleRange extends DataObject
             $fields->addFieldToTab('Root.Main', ReadonlyField::create('ClassName', 'Type'));
         }
 
-        /**
-         * ### @@@@ START REPLACEMENT @@@@ ###
-         * WHY: automated upgrade
-         * OLD: $this->ClassName (case sensitive)
-         * NEW: $this->ClassName (COMPLEX)
-         * EXP: Check if the class name can still be used as such
-         * ### @@@@ STOP REPLACEMENT @@@@ ###
-         */
         if ($this->ClassName === __CLASS__) {
             $fields->removeByName('ApplicableDays');
         }
@@ -236,44 +204,18 @@ class ScheduleRange extends DataObject
 
         // we use $this->StartTime, because if we leave it as 'now' time, we may actually be closer to
         // the _next_ day, and the diff logic further on will instead return +1 day more than we expect.
-        $now = new Datetime(DBDatetime::now()->Format('Y-m-d ' . $this->StartTime));
+        $now = new Datetime(DBDatetime::now()->format('yyyy-MM-dd ' . $this->StartTime));
 
         // make sure that the 'day' we start looking from is close to 'now' so our
         // loops don't work through days that don't matter
         if (! $this->day && $now > $scheduleDay) {
-
-            /**
-             * ### @@@@ START REPLACEMENT @@@@ ###
-             * WHY: automated upgrade
-             * OLD: ->format( (case sensitive)
-             * NEW: ->format( (COMPLEX)
-             * EXP: If this is a PHP Date format call then this needs to be changed to new Date formatting system. (see http://userguide.icu-project.org/formatparse/datetime)
-             * ### @@@@ STOP REPLACEMENT @@@@ ###
-             */
             $diff = $now->diff($scheduleDay)->format('%r%a');
             $this->day = abs($diff);
         }
 
         $scheduleDay->add(new DateInterval("P{$this->day}D"));
 
-        /**
-         * ### @@@@ START REPLACEMENT @@@@ ###
-         * WHY: automated upgrade
-         * OLD: >format('Y-m-d') (case sensitive)
-         * NEW: ->format('Y-MM-d') (COMPLEX)
-         * EXP: check usage of new date/time system https://www.php.net/manual/en/datetime.format.php vs http://userguide.icu-project.org/formatparse/datetime
-         * ### @@@@ STOP REPLACEMENT @@@@ ###
-         */
-
-        /**
-         * ### @@@@ START REPLACEMENT @@@@ ###
-         * WHY: automated upgrade
-         * OLD: ->format( (case sensitive)
-         * NEW: ->format( (COMPLEX)
-         * EXP: If this is a PHP Date format call then this needs to be changed to new Date formatting system. (see http://userguide.icu-project.org/formatparse/datetime)
-         * ### @@@@ STOP REPLACEMENT @@@@ ###
-         */
-        return $scheduleDay-- > format('Y-MM-d');
+        return $scheduleDay->format('yyyy-MM-dd');
     }
 
     protected function goToNextDay()

@@ -23,14 +23,6 @@ class ConfiguredSchedule extends DataObject
      */
     protected $currentSchedule = null;
 
-    /**
-     * ### @@@@ START REPLACEMENT @@@@ ###
-     * OLD: private static $db (case sensitive)
-     * NEW:
-    private static $db (COMPLEX)
-     * EXP: Check that is class indeed extends DataObject and that it is not a data-extension!
-     * ### @@@@ STOP REPLACEMENT @@@@ ###
-     */
     private static $table_name = 'ConfiguredSchedule';
 
     private static $db = [
@@ -48,14 +40,6 @@ class ConfiguredSchedule extends DataObject
         if ($this->ID) {
             Requirements::javascript('sunnysideup/silverstripe-schedulizer: schedulizer/js/schedulizer-admin.js');
 
-            /**
-             * ### @@@@ START REPLACEMENT @@@@ ###
-             * WHY: automated upgrade
-             * OLD: ->RenderWith( (ignore case)
-             * NEW: ->RenderWith( (COMPLEX)
-             * EXP: Check that the template location is still valid!
-             * ### @@@@ STOP REPLACEMENT @@@@ ###
-             */
             $fields->addFieldToTab('Root.Main', LiteralField::create('testingbits', $this->RenderWith('TestScheduleField')));
         }
 
@@ -69,25 +53,7 @@ class ConfiguredSchedule extends DataObject
 
         //filter SpecificRanges by end date
         $currentRanges = $this->ScheduleRanges()->filter([
-
-            /**
-             * ### @@@@ START REPLACEMENT @@@@ ###
-             * WHY: automated upgrade
-             * OLD: >format('Y-m-d') (case sensitive)
-             * NEW: ->format('Y-MM-d') (COMPLEX)
-             * EXP: check usage of new date/time system https://www.php.net/manual/en/datetime.format.php vs http://userguide.icu-project.org/formatparse/datetime
-             * ### @@@@ STOP REPLACEMENT @@@@ ###
-             */
-
-            /**
-             * ### @@@@ START REPLACEMENT @@@@ ###
-             * WHY: automated upgrade
-             * OLD: ->format( (case sensitive)
-             * NEW: ->format( (COMPLEX)
-             * EXP: If this is a PHP Date format call then this needs to be changed to new Date formatting system. (see http://userguide.icu-project.org/formatparse/datetime)
-             * ### @@@@ STOP REPLACEMENT @@@@ ###
-             */
-            'EndDate:GreaterThanOrEqual' => $now-- > format('Y-MM-d'),
+            'EndDate:GreaterThanOrEqual' => $now->format('yyyy-MM-dd'),
         ]);
         //loop each type and find a 'winner'
         $ranges = [];
@@ -115,25 +81,7 @@ class ConfiguredSchedule extends DataObject
         $candidates = [];
         foreach ($ranges as $key => $time) {
             // take the day of the given time
-
-            /**
-             * ### @@@@ START REPLACEMENT @@@@ ###
-             * WHY: automated upgrade
-             * OLD: >format('Y-m-d') (case sensitive)
-             * NEW: ->format('Y-MM-d') (COMPLEX)
-             * EXP: check usage of new date/time system https://www.php.net/manual/en/datetime.format.php vs http://userguide.icu-project.org/formatparse/datetime
-             * ### @@@@ STOP REPLACEMENT @@@@ ###
-             */
-
-            /**
-             * ### @@@@ START REPLACEMENT @@@@ ###
-             * WHY: automated upgrade
-             * OLD: ->format( (case sensitive)
-             * NEW: ->format( (COMPLEX)
-             * EXP: If this is a PHP Date format call then this needs to be changed to new Date formatting system. (see http://userguide.icu-project.org/formatparse/datetime)
-             * ### @@@@ STOP REPLACEMENT @@@@ ###
-             */
-            $timeDay = $time-- > format('Y-MM-d');
+            $timeDay = $time->format('yyyy-MM-dd');
 
             // no 'earliest' just yet
             if (! $earliestDay) {

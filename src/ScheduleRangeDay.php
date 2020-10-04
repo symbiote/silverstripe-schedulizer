@@ -44,15 +44,7 @@ class ScheduleRangeDay extends ScheduleRange
         if ($nextRunDateTime) {
             $i = 0; //In case getDays is corrupt exit after 7 tries.
 
-            /**
-             * ### @@@@ START REPLACEMENT @@@@ ###
-             * WHY: automated upgrade
-             * OLD: ->format( (case sensitive)
-             * NEW: ->format( (COMPLEX)
-             * EXP: If this is a PHP Date format call then this needs to be changed to new Date formatting system. (see http://userguide.icu-project.org/formatparse/datetime)
-             * ### @@@@ STOP REPLACEMENT @@@@ ###
-             */
-            while (! in_array($nextRunDateTime->format('D'), $this->getDays(), true) && $i < 7) {
+            while (! in_array($nextRunDateTime->format('d'), $this->getDays(), true) && $i < 7) {
                 $nextRunDateTime->add(new DateInterval('P1D'));
                 //Reset the start time
                 list($h, $m, $s) = explode(':', $this->StartTime);
