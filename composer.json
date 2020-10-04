@@ -1,5 +1,5 @@
 {
-	"name": "symbiote/silverstripe-schedulizer",
+	"name": "sunnysideup/silverstripe-schedulizer",
 	"description": "A module for organising stuff to happen at arbitrary times in the future, useful with QueuedJobs",
 	"type": "silverstripe-module",
 	"keywords": ["silverstripe", "schedule","queuedjobs"],
