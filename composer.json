@@ -18,7 +18,9 @@
             "email": "marcus@symbiote.com.au"
         }
     ],
-    "require": [],
+    "require": {
+        "silverstripe/recipe-cms": "^4.4"
+    },
     "extra": {
         "installer-name": "schedulizer",
         "branch-alias": {
