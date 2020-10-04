@@ -39,7 +39,16 @@ class ConfiguredSchedule  extends DataObject {
 
 		if ($this->ID) {
 			Requirements::javascript('schedulizer/js/schedulizer-admin.js');
-			$fields->addFieldToTab('Root.Main', LiteralField::create('testingbits', $this->renderWith('TestScheduleField')));
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: ->RenderWith( (ignore case)
+  * NEW: ->RenderWith( (COMPLEX)
+  * EXP: Check that the template location is still valid!
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+			$fields->addFieldToTab('Root.Main', LiteralField::create('testingbits', $this->RenderWith('TestScheduleField')));
 		}
 
 		return $fields;
@@ -51,10 +60,28 @@ class ConfiguredSchedule  extends DataObject {
 		
 		//filter SpecificRanges by end date
 		$currentRanges = $this->ScheduleRanges()->filter(array(
-			'EndDate:GreaterThanOrEqual' => $now->format('Y-m-d')
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: >format('Y-m-d') (case sensitive)
+  * NEW: ->format('Y-MM-d') (COMPLEX)
+  * EXP: check usage of new date/time system https://www.php.net/manual/en/datetime.format.php vs http://userguide.icu-project.org/formatparse/datetime
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: ->format( (case sensitive)
+  * NEW: ->format( (COMPLEX)
+  * EXP: If this is a PHP Date format call then this needs to be changed to new Date formatting system. (see http://userguide.icu-project.org/formatparse/datetime)
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+			'EndDate:GreaterThanOrEqual' => $now-->format('Y-MM-d')
 		));
 		//loop each type and find a 'winner'
-		$ranges = array();
+		$ranges = [];
 
 		foreach ($currentRanges as $specficRange) {
 			$dateTime = $specficRange->getNextDateTime();
@@ -76,10 +103,28 @@ class ConfiguredSchedule  extends DataObject {
 		// prune the collected list back to those that fall on the _next available day_
 		asort($ranges);
 		$earliestDay = '';
-		$candidates = array();
+		$candidates = [];
 		foreach ($ranges as $key => $time) {
 			// take the day of the given time
-			$timeDay = $time->format('Y-m-d');
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: >format('Y-m-d') (case sensitive)
+  * NEW: ->format('Y-MM-d') (COMPLEX)
+  * EXP: check usage of new date/time system https://www.php.net/manual/en/datetime.format.php vs http://userguide.icu-project.org/formatparse/datetime
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: ->format( (case sensitive)
+  * NEW: ->format( (COMPLEX)
+  * EXP: If this is a PHP Date format call then this needs to be changed to new Date formatting system. (see http://userguide.icu-project.org/formatparse/datetime)
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+			$timeDay = $time-->format('Y-MM-d');
 			
 			// no 'earliest' just yet
 			if (!$earliestDay) {

@@ -121,7 +121,7 @@ class ConfiguredScheduleTest extends SapphireTest {
 	public function testPrecedence() {
 		$sched = $this->objFromFixture('ConfiguredSchedule', 'ConfigSched2');
 		
-		$times = array();
+		$times = [];
 		
 		SS_Datetime::set_mock_now('2015-10-22 23:55:00');
 		$times[] = $sched->getNextScheduledDateTime()->Format('Y-m-d H:i:s');

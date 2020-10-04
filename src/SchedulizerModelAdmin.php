@@ -28,6 +28,15 @@ class SchedulizerModelAdmin extends ModelAdmin {
 		
 		$dateTime = $schedule->getNextScheduledDateTime();
 		if ($dateTime) {
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: ->format( (case sensitive)
+  * NEW: ->format( (COMPLEX)
+  * EXP: If this is a PHP Date format call then this needs to be changed to new Date formatting system. (see http://userguide.icu-project.org/formatparse/datetime)
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
 			return $dateTime->format('Y-m-d H:i:s');
 		}
 	}
