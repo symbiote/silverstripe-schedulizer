@@ -1,6 +1,6 @@
 <?php
 
-namespace Sunnysideup\Schedulizer;
+namespace Sunnysideup\Schedulizer\Model;
 
 use DateInterval;
 
@@ -39,7 +39,7 @@ class ScheduleRange extends DataObject
     private static $table_name = 'ScheduleRange';
 
     private static $db = [
-        'Title' => 'VarChar',
+        'Title' => 'Varchar',
         //Seconds between scheduled times
         'Interval' => 'Int',
         'StartTime' => 'Time',
@@ -47,7 +47,7 @@ class ScheduleRange extends DataObject
         'StartDate' => 'Date',
         'EndDate' => 'Date',
         //Days this schedule is valid (e.g 'Monday,Tuesday,Wednesday,Thrusday,Friday,Weekend,Weekday')
-        'ApplicableDays' => 'VarChar',
+        'ApplicableDays' => 'Varchar',
     ];
 
     private static $has_one = [
@@ -76,21 +76,11 @@ class ScheduleRange extends DataObject
         $fields->replaceField(
             'StartDate',
             DateField::create('StartDate')
-                ->setConfig('dateformat', 'dd/MM/yyyy')
-                ->setConfig('showcalendar', true)
-                ->setDescription(
-                    'DD/MM/YYYY e.g. ' . $dt->format('dd/MM/yyyy')
-                )
         );
 
         $fields->replaceField(
             'EndDate',
             DateField::create('EndDate')
-                ->setConfig('dateformat', 'dd/MM/yyyy')
-                ->setConfig('showcalendar', true)
-                ->setDescription(
-                    'DD/MM/YYYY e.g. ' . $dt->format('dd/MM/yyyy')
-                )
         );
 
         if ($this->ID === null) {
@@ -133,15 +123,15 @@ class ScheduleRange extends DataObject
     /**
      * Detrimines the next valid time and date for this schedule to execute
      *
-     * @return object|null DateTime
+     * @return DateTime|null DateTime
      */
-    public function getNextDateTime()
+    public function getNextDateTime() : ?DateTime
     {
         $this->day = 0;
         return $this->getScheduleDateTime();
     }
 
-    public function getStartDateTime()
+    public function getStartDateTime(): Datetime
     {
         return new Datetime($this->getScheduleDay() . ' ' . $this->StartTime);
     }
@@ -150,7 +140,7 @@ class ScheduleRange extends DataObject
      * The end time for the start/end block
      * @return \Datetime
      */
-    public function getEndDateTime()
+    public function getEndDateTime(): Datetime
     {
         return new Datetime($this->getScheduleDay() . ' ' . $this->EndTime);
     }
@@ -159,12 +149,16 @@ class ScheduleRange extends DataObject
      * The end time for the start/end block
      * @return \Datetime
      */
-    public function getLastScheduleTime()
+    public function getLastScheduleTime(): Datetime
     {
         return new Datetime($this->EndDate . ' ' . $this->EndTime);
     }
 
-    protected function getScheduleDateTime()
+    /**
+     *
+     * @return Datetime|null
+     */
+    protected function getScheduleDateTime() : ?Datetime
     {
         $now = new Datetime(DBDatetime::now()->Format(DateTime::ATOM));
         // get a start time for 'today'
@@ -198,7 +192,7 @@ class ScheduleRange extends DataObject
         return $nextDateTime;
     }
 
-    protected function getScheduleDay()
+    protected function getScheduleDay() : ?Datetime
     {
         $scheduleDay = new Datetime($this->StartDate . ' ' . $this->StartTime);
 
@@ -217,7 +211,7 @@ class ScheduleRange extends DataObject
 
         $scheduleDay->add(new DateInterval("P{$this->day}D"));
 
-        return $scheduleDay->format('yyyy-MM-dd');
+        return $scheduleDay->format('Y-m-d');
     }
 
     protected function goToNextDay()

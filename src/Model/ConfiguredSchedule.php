@@ -1,6 +1,6 @@
 <?php
 
-namespace Sunnysideup\Schedulizer;
+namespace Sunnysideup\Schedulizer\Model;
 
 use DateTime;
 
@@ -26,7 +26,7 @@ class ConfiguredSchedule extends DataObject
     private static $table_name = 'ConfiguredSchedule';
 
     private static $db = [
-        'Title' => 'VarChar',
+        'Title' => 'Varchar',
     ];
 
     private static $has_many = [
@@ -38,22 +38,32 @@ class ConfiguredSchedule extends DataObject
         $fields = parent::getCMSFields();
 
         if ($this->ID) {
-            Requirements::javascript('sunnysideup/silverstripe-schedulizer: schedulizer/js/schedulizer-admin.js');
+            Requirements::javascript('sunnysideup/silverstripe-schedulizer: client/js/schedulizer-admin.js');
 
-            $fields->addFieldToTab('Root.Main', LiteralField::create('testingbits', $this->RenderWith('TestScheduleField')));
+            $fields->addFieldToTab(
+                'Root.Main',
+                LiteralField::create(
+                    'testingbits',
+                    $this->RenderWith('TestScheduleField')
+                )
+            );
         }
 
         return $fields;
     }
 
-    public function getNextScheduledDateTime()
+    /**
+     *
+     * @return DateTime|null
+     */
+    public function getNextScheduledDateTime() : ?DateTime
     {
         $now = new DateTime(DBDatetime::now());
         $return = null;
 
         //filter SpecificRanges by end date
         $currentRanges = $this->ScheduleRanges()->filter([
-            'EndDate:GreaterThanOrEqual' => $now->format('yyyy-MM-dd'),
+            'EndDate:GreaterThanOrEqual' => $now->format('Y-m-d'),
         ]);
         //loop each type and find a 'winner'
         $ranges = [];
@@ -81,7 +91,7 @@ class ConfiguredSchedule extends DataObject
         $candidates = [];
         foreach ($ranges as $key => $time) {
             // take the day of the given time
-            $timeDay = $time->format('yyyy-MM-dd');
+            $timeDay = $time->format('Y-m-d');
 
             // no 'earliest' just yet
             if (! $earliestDay) {
@@ -119,7 +129,7 @@ class ConfiguredSchedule extends DataObject
         return $return;
     }
 
-    public function getCMSValidator()
+    public function getCMSValidator() : RequiredFields
     {
         return new RequiredFields([
             'Title',

@@ -1,7 +1,7 @@
 <?php
 
-namespace Sunnysideup\Schedulizer;
-
+namespace Sunnysideup\Schedulizer\Model\ScheduleRange;
+use Sunnysideup\Schedulizer\Model\ScheduleRange;
 /**
  * A date range class that can hold:
  * - specific date range (e.g 01/01/2015 to 29/01/2015
@@ -12,6 +12,9 @@ namespace Sunnysideup\Schedulizer;
  */
 class ScheduleRangeDefault extends ScheduleRangeDay
 {
+
+    private static $table_name = 'ScheduleRangeDefault';
+
     public function onBeforeWrite()
     {
         parent::onBeforeWrite();

@@ -1,10 +1,10 @@
 <?php
 
-namespace Sunnysideup\Schedulizer;
+namespace Sunnysideup\Schedulizer\Model\ScheduleRange;
 
 use DateInterval;
 use SilverStripe\Forms\CheckboxSetField;
-
+use Sunnysideup\Schedulizer\Model\ScheduleRange;
 /**
  * A date range class that can hold:
  * - specific date range (e.g 01/01/2015 to 29/01/2015
@@ -15,29 +15,42 @@ use SilverStripe\Forms\CheckboxSetField;
  */
 class ScheduleRangeDay extends ScheduleRange
 {
+
+    private static $table_name = 'ScheduleRangeDay';
+
+    public const WEEK_DAYS = [
+        'Mon' => 'Monday',
+        'Tue' => 'Tuesday',
+        'Wed' => 'Wednesday',
+        'Thu' => 'Thursday',
+        'Fri' => 'Friday',
+        'Sat' => 'Saturday',
+        'Sun' => 'Sunday',
+    ];
+
+
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
 
-        $fields->addFieldToTab('Root.Main', CheckboxSetField::create('ApplicableDays', 'Schedule Days', [
-            'Mon' => 'Monday',
-            'Tue' => 'Tuesday',
-            'Wed' => 'Wednesday',
-            'Thu' => 'Thursday',
-            'Fri' => 'Friday',
-            'Sat' => 'Saturday',
-            'Sun' => 'Sunday',
-        ]));
+        $fields->addFieldToTab(
+            'Root.Main',
+            CheckboxSetField::create(
+                'ApplicableDays',
+                'Schedule Days',
+                self::WEEK_DAYS
+            )
+        );
 
         return $fields;
     }
 
     /**
-     * Detrimines the next valid time and date for this schedule to execute
+     * Determines the next valid time and date for this schedule to execute
      *
-     * @return object DateTime
+     * @return DateTime|null
      */
-    public function getNextDateTime()
+    public function getNextDateTime() : ?DateTime
     {
         $nextRunDateTime = $this->getScheduleDateTime();
 

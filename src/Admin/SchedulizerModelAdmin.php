@@ -1,9 +1,10 @@
 <?php
 
-namespace Sunnysideup\Schedulizer;
+namespace Sunnysideup\Schedulizer\Admin;
 
 use SilverStripe\Admin\ModelAdmin;
 use SilverStripe\ORM\FieldType\DBDatetime;
+use Sunnysideup\Schedulizer\Model\ConfiguredSchedule;
 
 /**
  * @author Stephen McMahon <stephen@symbiote.com.au>
@@ -32,12 +33,12 @@ class SchedulizerModelAdmin extends ModelAdmin
         if (! $time || ! $schedule) {
             return 'Invalid date';
         }
-        $date = date('Y-m-d H:i:s', $time);
-        DBDatetime::set_mock_now($date);
+        // $date = date('Y-m-d H:i:s', $time);
+        // DBDatetime::set_mock_now($date);
 
         $dateTime = $schedule->getNextScheduledDateTime();
         if ($dateTime) {
-            return $dateTime->format('yyyy-MM-dd hh:mm:ss');
+            return $dateTime->format('Y-m-d H:i:s');
         }
     }
 }
