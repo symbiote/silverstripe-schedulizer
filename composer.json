@@ -24,7 +24,10 @@
     "extra": {
         "branch-alias": {
             "dev-master": "2.0.x-dev"
-        }
+        },
+        "expose": [
+            "client/js"
+        ]
     },
     "replace": {
         "silverstripe-australia/silverstripe-schedulizer": "self.version"
