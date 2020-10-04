@@ -29,5 +29,10 @@
     "replace": {
         "silverstripe-australia/silverstripe-schedulizer": "self.version"
     },
-    "suggest": []
+    "suggest": [],
+    "autoload": {
+        "psr-4": {
+            "Sunnysideup\\Schedulizer\\": "src/"
+        }
+    }
 }
