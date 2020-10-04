@@ -1,4 +1,19 @@
 <?php
+
+namespace Sunnysideup\Schedulizer;
+
+use DataObject;
+use DateTime;
+use DateField;
+use ClassInfo;
+use TextField;
+use DropdownField;
+use ReadonlyField;
+use RequiredFields;
+use Datetime;
+use SS_Datetime;
+use DateInterval;
+
 /**
  * A date range class that can hold:
  * - specific date range (e.g 01/01/2015 to 29/01/2015

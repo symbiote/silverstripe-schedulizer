@@ -1,4 +1,10 @@
 <?php
+
+namespace Sunnysideup\Schedulizer;
+
+use ModelAdmin;
+use SS_Datetime;
+
 /**
  * @author Stephen McMahon <stephen@symbiote.com.au>
  */

@@ -1,0 +1,7 @@
+mappings:
+  ScheduleRangeDefault: Sunnysideup\Schedulizer\ScheduleRangeDefault
+  ScheduleRangeDay: Sunnysideup\Schedulizer\ScheduleRangeDay
+  SchedulizerModelAdmin: Sunnysideup\Schedulizer\SchedulizerModelAdmin
+  ConfiguredSchedule: Sunnysideup\Schedulizer\ConfiguredSchedule
+  ScheduleRangeDayType: Sunnysideup\Schedulizer\ScheduleRangeDayType
+  ScheduleRange: Sunnysideup\Schedulizer\ScheduleRange

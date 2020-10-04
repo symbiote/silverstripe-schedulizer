@@ -1,4 +1,10 @@
 <?php
+
+namespace Sunnysideup\Schedulizer;
+
+use CheckboxSetField;
+use DateInterval;
+
 /**
  * A date range class that can hold:
  * - specific date range (e.g 01/01/2015 to 29/01/2015

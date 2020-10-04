@@ -1,4 +1,14 @@
 <?php
+
+namespace Sunnysideup\Schedulizer;
+
+use DataObject;
+use Requirements;
+use LiteralField;
+use DateTime;
+use SS_Datetime;
+use RequiredFields;
+
 /**
  *
  * @author Stephen McMahon <stephen@symbiote.com.au>
