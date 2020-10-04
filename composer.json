@@ -1,31 +1,41 @@
 {
-	"name": "symbiote/silverstripe-schedulizer",
-	"description": "A module for organising stuff to happen at arbitrary times in the future, useful with QueuedJobs",
-	"type": "silverstripe-module",
-	"keywords": ["silverstripe", "schedule","queuedjobs"],
-	"license": "BSD-3-Clause",
-	"authors": [
-		{
-			"name": "Stephen McMahon",
-			"email": "stephen@symbiote.com.au"
-		},
-		{
-			"name": "Marcus Nyeholt",
-			"email": "marcus@symbiote.com.au"
-		}
-	],
-	"require": {
-		"silverstripe/framework": "~3.1"
-	},
-	"extra": {
-		"installer-name": "schedulizer",
-		"branch-alias": {
-			"dev-master": "2.0.x-dev"
-		}
-	},
-	"replace": {
-		"silverstripe-australia/silverstripe-schedulizer": "self.version"
-	},
-	"suggest": {
-	}
+    "name": "sunnysideup/silverstripe-schedulizer",
+    "description": "A module for organising stuff to happen at arbitrary times in the future, useful with QueuedJobs",
+    "type": "silverstripe-vendormodule",
+    "keywords": [
+        "silverstripe",
+        "schedule",
+        "queuedjobs"
+    ],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Stephen McMahon",
+            "email": "stephen@symbiote.com.au"
+        },
+        {
+            "name": "Marcus Nyeholt",
+            "email": "marcus@symbiote.com.au"
+        }
+    ],
+    "require": {
+        "silverstripe/recipe-cms": "^4.4"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        },
+        "expose": [
+            "client/js"
+        ]
+    },
+    "replace": {
+        "silverstripe-australia/silverstripe-schedulizer": "self.version"
+    },
+    "suggest": [],
+    "autoload": {
+        "psr-4": {
+            "Sunnysideup\\Schedulizer\\": "src/"
+        }
+    }
 }

@@ -1,6 +1,7 @@
-ConfiguredSchedule:
+Sunnysideup\Schedulizer\Model\ConfiguredSchedule:
   schedule_range_precedence:
-    - ScheduleRange
-    - ScheduleRangeDay
-    - ScheduleRangeDayType
-    - ScheduleRangeDefault
+    - Sunnysideup\Schedulizer\Model\ScheduleRange
+    - Sunnysideup\Schedulizer\Model\ScheduleRange\ScheduleRangeDay
+    - Sunnysideup\Schedulizer\Model\ScheduleRange\ScheduleRangeWeekDays
+    - Sunnysideup\Schedulizer\Model\ScheduleRange\ScheduleRangeDayType
+    - Sunnysideup\Schedulizer\Model\ScheduleRange\ScheduleRangeDefault

@@ -1,0 +1,7 @@
+SilverStripe\ORM\DatabaseAdmin:
+  classname_value_remapping:
+    ConfiguredSchedule:    Sunnysideup\Schedulizer\Model\ConfiguredSchedule
+    ScheduleRange:         Sunnysideup\Schedulizer\Model\ScheduleRange
+    ScheduleRangeDefault:  Sunnysideup\Schedulizer\Model\ScheduleRange\ScheduleRangeDefault
+    ScheduleRangeDay:      Sunnysideup\Schedulizer\Model\ScheduleRange\ScheduleRangeDay
+    ScheduleRangeDayType:  Sunnysideup\Schedulizer\Model\ScheduleRange\ScheduleRangeDayType
