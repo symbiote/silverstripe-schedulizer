@@ -2,9 +2,7 @@
 
 namespace Sunnysideup\Schedulizer;
 
-
 use SilverStripe\Forms\DropdownField;
-
 
 /**
  * A date range class that can hold:
@@ -14,17 +12,17 @@ use SilverStripe\Forms\DropdownField;
  *
  * @author Stephen McMahon <stephen@symbiote.com.au>
  */
-class ScheduleRangeDayType extends ScheduleRangeDay {
+class ScheduleRangeDayType extends ScheduleRangeDay
+{
+    public function getCMSFields()
+    {
+        $fields = parent::getCMSFields();
 
-	public function getCMSFields() {
-		$fields = parent::getCMSFields();
+        $fields->addFieldToTab('Root.Main', DropdownField::create('ApplicableDays', 'Schedule Day Type', [
+            'Mon,Tue,Wed,Thu,Fri' => 'Weekdays',
+            'Sat,Sun' => 'Weekend',
+        ]));
 
-		$fields->addFieldToTab('Root.Main', DropdownField::create('ApplicableDays', 'Schedule Day Type', array (
-			'Mon,Tue,Wed,Thu,Fri'	=> 'Weekdays',
-			'Sat,Sun'				=> 'Weekend'
-		)));
-
-		return $fields;
-	}
+        return $fields;
+    }
 }
-

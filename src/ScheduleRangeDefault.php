@@ -2,8 +2,6 @@
 
 namespace Sunnysideup\Schedulizer;
 
-
-
 /**
  * A date range class that can hold:
  * - specific date range (e.g 01/01/2015 to 29/01/2015
@@ -12,16 +10,18 @@ namespace Sunnysideup\Schedulizer;
  *
  * @author Stephen McMahon <stephen@symbiote.com.au>
  */
-class ScheduleRangeDefault extends ScheduleRangeDay {
+class ScheduleRangeDefault extends ScheduleRangeDay
+{
+    public function onBeforeWrite()
+    {
+        parent::onBeforeWrite();
+        $this->ApplicableDays = 'Mon,Tue,Wed,Thu,Fri,Sat,Sun';
+    }
 
-	public function onBeforeWrite() {
-		parent::onBeforeWrite();
-		$this->ApplicableDays = 'Mon,Tue,Wed,Thu,Fri,Sat,Sun';
-	}
-	public function getCMSFields() {
-		$fields = parent::getCMSFields();
-		$fields->removeByName('ApplicableDays');
-		return $fields;
-	}
+    public function getCMSFields()
+    {
+        $fields = parent::getCMSFields();
+        $fields->removeByName('ApplicableDays');
+        return $fields;
+    }
 }
-

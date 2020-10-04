@@ -1,0 +1,81 @@
+
+
+---------------------------------
+  Running Easy Conding Standards
+---------------------------------
+  directory of script: /home/ssu/.config/composer/vendor/bin
+  directory to analyse: /var/www/ss3/upgrades/silverstripe-schedulizer/schedulizer/src
+  also check (e.g. _config.php file): /var/www/ss3/upgrades/silverstripe-schedulizer/app/_config.php
+  ecs config file: /home/ssu/.config/composer/vendor/bin/../sunnysideup/easy-coding-standards/ecs.yml
+---------------------------------
+
+
+EasyCodingStandard v6.1.0
+Config file: /home/ssu/.config/composer/vendor/sunnysideup/easy-coding-standards/ecs.yml
+ 0/1 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%
+ 1/1 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%
+
+ [OK] No errors found. Great job - your code is shiny in style!                                                         
+
+EasyCodingStandard v6.1.0
+Config file: /home/ssu/.config/composer/vendor/sunnysideup/easy-coding-standards/ecs.yml
+ 0/6 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%
+ 2/6 [▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░░░░░░░░]  33%
+ 6/6 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ schedulizer/src/ScheduleRange.php:276
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Unused variable $scheduleDay.
+ (SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff.UnusedVariable)
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ [ERROR] Found 1 error that need to be fixed manually.                                                                  
+
+
+
+---------------------------------
+  Running PHP STAN
+---------------------------------
+  directory of script: /home/ssu/.config/composer/vendor/bin
+  directory to analyse: /var/www/ss3/upgrades/silverstripe-schedulizer/schedulizer/src
+  also check (e.g. _config.php file): /var/www/ss3/upgrades/silverstripe-schedulizer/app/_config.php
+  level: 4 (1/6)
+  php stan config file: /home/ssu/.config/composer/vendor/bin/../sunnysideup/easy-coding-standards/phpstan.neon
+---------------------------------
+
+
+ 0/1 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%[2K 1/1 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%
+
+ [OK] No errors                                                                                                         
+
+ 0/6 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%[2K 3/6 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░░░]  50%[2K 6/6 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%
+
+ ------ ---------------------------- 
+  Line   ConfiguredSchedule.php      
+ ------ ---------------------------- 
+  90     Cannot use -- on DateTime.  
+  90     Function format not found.  
+  136    Function format not found.  
+ ------ ---------------------------- 
+
+ ------ ---------------------------- 
+  Line   ScheduleRange.php           
+ ------ ---------------------------- 
+  276    Cannot use -- on DateTime.  
+  276    Function format not found.  
+ ------ ---------------------------- 
+
+ ------ ----------------------------------------------------------------------------------- 
+  Line   SchedulizerModelAdmin.php                                                          
+ ------ ----------------------------------------------------------------------------------- 
+  38     Cannot call method getNextScheduledDateTime() on int|SilverStripe\ORM\DataObject.  
+ ------ ----------------------------------------------------------------------------------- 
+
+ ------------------------------------------------------------------------------------------------- 
+  Error                                                                                            
+ ------------------------------------------------------------------------------------------------- 
+  Ignored error pattern #on an unknown class [a-zA-Z0-9\\_]+# was not matched in reported errors.  
+ ------------------------------------------------------------------------------------------------- 
+
+ [ERROR] Found 7 errors                                                                                                 
+
