@@ -22,7 +22,6 @@
         "silverstripe/recipe-cms": "^4.4"
     },
     "extra": {
-        "installer-name": "schedulizer",
         "branch-alias": {
             "dev-master": "2.0.x-dev"
         }
