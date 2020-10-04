@@ -38,7 +38,7 @@ class ConfiguredSchedule  extends DataObject {
 		$fields = parent::getCMSFields();
 
 		if ($this->ID) {
-			Requirements::javascript('schedulizer/js/schedulizer-admin.js');
+			Requirements::javascript('sunnysideup/silverstripe-schedulizer: schedulizer/js/schedulizer-admin.js');
 
 /**
   * ### @@@@ START REPLACEMENT @@@@ ###
