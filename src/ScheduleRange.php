@@ -209,6 +209,8 @@ class ScheduleRange extends DataObject
         // make sure that the 'day' we start looking from is close to 'now' so our
         // loops don't work through days that don't matter
         if (! $this->day && $now > $scheduleDay) {
+            //a = Total number of days as a result of a DateTime::diff() or (unknown) otherwise
+            //r = 	Sign "-" when negative, empty when positive
             $diff = $now->diff($scheduleDay)->format('%r%a');
             $this->day = abs($diff);
         }
