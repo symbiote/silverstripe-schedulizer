@@ -189,3 +189,4 @@ class ScheduleRange extends DataObject {
 		$this->day++;
 	}
 }
+

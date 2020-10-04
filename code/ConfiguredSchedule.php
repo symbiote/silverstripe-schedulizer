@@ -118,3 +118,4 @@ class ConfiguredSchedule  extends DataObject {
 		return $this->currentSchedule;
 	}
 }
+

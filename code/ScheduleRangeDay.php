@@ -55,3 +55,4 @@ class ScheduleRangeDay extends ScheduleRange {
 		return explode(',', $this->ApplicableDays);
 	}
 }
+

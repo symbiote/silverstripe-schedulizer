@@ -19,3 +19,4 @@ class ScheduleRangeDefault extends ScheduleRangeDay {
 		return $fields;
 	}
 }
+

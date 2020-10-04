@@ -32,3 +32,4 @@ class SchedulizerModelAdmin extends ModelAdmin {
 		}
 	}
 }
+
